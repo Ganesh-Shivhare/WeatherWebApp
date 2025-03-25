@@ -20,17 +20,17 @@ import {
   IconButton,
 } from '@mui/material';
 import {
-  LocationOn,
-  Thermostat,
+  // LocationOn,
+  // Thermostat,
   WaterDrop,
   Air,
-  WbSunny,
-  WbTwilight,
-  Cloud,
+  // WbSunny,
+  // WbTwilight,
+  // Cloud,
   Warning,
   ArrowBack,
   ExpandMore,
-  ExpandLess,
+  // ExpandLess,
 } from '@mui/icons-material';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,10 +42,10 @@ import {
   Line,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
   ResponsiveContainer,
   Area,
+  // CartesianGrid,
 } from 'recharts';
 
 interface TabPanelProps {
@@ -82,17 +82,78 @@ interface ChartConfig {
 }
 
 const WeatherDetail: React.FC = () => {
-  const { location } = useParams<{ location: string }>();
+  const { city } = useParams<{ city: string }>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { currentWeather, forecast, loading, error } = useSelector((state: RootState) => state.weather);
-  const [tabValue, setTabValue] = useState(0);
+  const [tabValue, setTabValue] = useState<number>(0);
   const [chartData, setChartData] = useState<any[]>([]);
-  const [isDaytime, setIsDaytime] = useState(true);
-  const [selectedChart, setSelectedChart] = useState('temperature');
+  const [selectedChart, setSelectedChart] = useState<string>('temperature');
   const [expandedDay, setExpandedDay] = useState<number | null>(null);
 
+  // Function to prepare chart data from hourly forecast
+  const prepareChartData = (hourData: any[]) => {
+    if (!hourData || hourData.length === 0) {
+      return [];
+    }
+    
+    // Create formatted data with all metrics
+    return hourData.map((hour: any) => ({
+      time: new Date(hour.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      temp: parseFloat(hour.temp_c || 0),
+      precip: parseFloat(hour.precip_mm || 0),
+      wind: parseFloat(hour.wind_kph || 0)
+    }));
+  };
+
+  // Update the handleDayClick function to load hourly data for the selected day
+  const handleDayClick = (index: number) => {
+    const newExpandedDay = expandedDay === index ? null : index;
+    setExpandedDay(newExpandedDay);
+    
+    if (newExpandedDay !== null && forecast?.forecast?.forecastday?.[newExpandedDay]?.hour) {
+      const hourlyData = forecast.forecast.forecastday[newExpandedDay].hour;
+      const processedData = prepareChartData(hourlyData);
+      setChartData(processedData);
+    } else if (forecast?.forecast?.forecastday?.[0]?.hour) {
+      // Reset to today's data when collapsing
+      const todayHourlyData = forecast.forecast.forecastday[0].hour;
+      const processedData = prepareChartData(todayHourlyData);
+      setChartData(processedData);
+    }
+  };
+
+  // Update the useEffect that loads weather data
   useEffect(() => {
+    const location = city || localStorage.getItem('location');
+
+    if (!location) {
+      // Redirect to home if no location is provided
+      navigate('/');
+      return;
+    }
+
+    if (location) {
+      localStorage.setItem('location', location);
+    }
+
+    const loadCachedData = () => {
+      const cachedCurrentWeather = localStorage.getItem('currentWeather');
+      const cachedForecast = localStorage.getItem('forecast');
+
+      if (cachedCurrentWeather && cachedForecast) {
+        const parsedForecast = JSON.parse(cachedForecast);
+        dispatch(setCurrentWeather(JSON.parse(cachedCurrentWeather)));
+        dispatch(setForecast(parsedForecast));
+        
+        // Process today's hourly data from cache
+        if (parsedForecast?.forecast?.forecastday?.[0]?.hour) {
+          const processedData = prepareChartData(parsedForecast.forecast.forecastday[0].hour);
+          setChartData(processedData);
+        }
+      }
+    };
+
     const fetchWeatherData = async () => {
       if (!location) return;
 
@@ -105,24 +166,15 @@ const WeatherDetail: React.FC = () => {
         dispatch(setCurrentWeather(currentData));
         dispatch(setForecast(forecastData));
 
-        // Prepare chart data
-        if (forecastData.forecast.forecastday[0]?.hour) {
-          const data = forecastData.forecast.forecastday[0].hour.map((hour: any) => ({
-            time: new Date(hour.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            temp: hour.temp_c,
-            precip: hour.precip_mm,
-            wind: hour.wind_kph,
-            condition: hour.condition.text,
-            icon: hour.condition.icon,
-          }));
-          setChartData(data);
-        }
+        // Cache the data
+        localStorage.setItem('currentWeather', JSON.stringify(currentData));
+        localStorage.setItem('forecast', JSON.stringify(forecastData));
 
-        // Check if it's daytime
-        const now = new Date();
-        const sunrise = new Date(forecastData.forecast.forecastday[0].astro.sunrise);
-        const sunset = new Date(forecastData.forecast.forecastday[0].astro.sunset);
-        setIsDaytime(now >= sunrise && now <= sunset);
+        // Process today's hourly data
+        if (forecastData?.forecast?.forecastday?.[0]?.hour) {
+          const processedData = prepareChartData(forecastData.forecast.forecastday[0].hour);
+          setChartData(processedData);
+        }
       } catch (err) {
         dispatch(setError(err instanceof Error ? err.message : 'Failed to fetch weather data'));
       } finally {
@@ -130,18 +182,40 @@ const WeatherDetail: React.FC = () => {
       }
     };
 
+    loadCachedData();
     fetchWeatherData();
-  }, [location, dispatch]);
+  }, [city, dispatch, navigate]);
+
+  // Add useEffect to update chart data when selectedChart changes
+  useEffect(() => {
+    if (forecast?.forecast?.forecastday) {
+      let hourlyData;
+      if (expandedDay !== null && forecast.forecast.forecastday[expandedDay]?.hour) {
+        hourlyData = forecast.forecast.forecastday[expandedDay].hour;
+      } else if (forecast.forecast.forecastday[0]?.hour) {
+        hourlyData = forecast.forecast.forecastday[0].hour;
+      }
+      
+      if (hourlyData) {
+        const processedData = prepareChartData(hourlyData);
+        setChartData(processedData);
+      }
+    }
+  }, [selectedChart, forecast, expandedDay]);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
 
-  const handleDayClick = (index: number) => {
-    setExpandedDay(expandedDay === index ? null : index);
-  };
+  const renderChart = (data = chartData) => {
+    if (!data || data.length === 0) {
+      return (
+        <Box sx={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px dashed gray' }}>
+          <Typography color="white">No chart data available</Typography>
+        </Box>
+      );
+    }
 
-  const renderChart = () => {
     const chartConfigs: Record<string, ChartConfig> = {
       temperature: {
         dataKey: 'temp',
@@ -166,36 +240,61 @@ const WeatherDetail: React.FC = () => {
     const chartConfig = chartConfigs[selectedChart];
 
     if (!chartConfig) {
-      return null;
+      return (
+        <Box sx={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '1px dashed gray' }}>
+          <Typography color="white">Invalid chart type selected</Typography>
+        </Box>
+      );
     }
+    
+    // Calculate min and max for better domain setting
+    const values = data.map(item => Number(item[chartConfig.dataKey] || 0));
+    const min = Math.floor(Math.min(...values)) || 0;
+    const max = Math.ceil(Math.max(...values)) || 10;
+    // Ensure bottom of chart is always -2 or lower
+    const yDomain = [Math.min(min - 2, -2), max + 5];
 
     return (
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={chartData}>
+        <LineChart data={data}>
           <defs>
             <linearGradient id={`color${selectedChart}`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor={chartConfig.color} stopOpacity={0.3}/>
-              <stop offset="95%" stopColor={chartConfig.color} stopOpacity={0}/>
+              <stop offset="0%" stopColor={chartConfig.color} stopOpacity={0.6}/>
+              <stop offset="100%" stopColor={chartConfig.color} stopOpacity={0}/>
             </linearGradient>
+            <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+              <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur" />
+              <feOffset in="blur" dx="0" dy="4" result="offsetBlur" />
+              <feComponentTransfer in="offsetBlur" result="shadow">
+                <feFuncA type="linear" slope="0.6" />
+              </feComponentTransfer>
+              <feMerge>
+                <feMergeNode in="shadow" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
           </defs>
           <XAxis
             dataKey="time"
             stroke="white"
             tick={{ fill: 'white', fontSize: 12 }}
+            tickCount={6}
           />
           <YAxis
             stroke="white"
             tick={{ fill: 'white', fontSize: 12 }}
-            domain={['dataMin - 5', 'dataMax + 5']}
+            domain={yDomain}
+            tickFormatter={(value) => `${value}${chartConfig.unit}`}
           />
           <Tooltip
             contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', border: 'none', color: 'white' }}
-            formatter={(value: number) => [`${value}${chartConfig.unit}`, chartConfig.label]}
+            formatter={(value: number) => [`${value.toFixed(1)}${chartConfig.unit}`, chartConfig.label]}
+            labelFormatter={(label) => `Time: ${label}`}
           />
           <Area
             type="monotone"
             dataKey={chartConfig.dataKey}
-            stroke={chartConfig.color}
+            stroke="none"
             fillOpacity={1}
             fill={`url(#color${selectedChart})`}
           />
@@ -203,9 +302,10 @@ const WeatherDetail: React.FC = () => {
             type="monotone"
             dataKey={chartConfig.dataKey}
             stroke={chartConfig.color}
-            strokeWidth={2}
-            dot={{ fill: chartConfig.color, r: 4 }}
+            strokeWidth={2.5}
+            dot={{ fill: chartConfig.color, r: 3 }}
             activeDot={{ r: 6, fill: 'white', stroke: chartConfig.color }}
+            filter="url(#shadow)"
           />
         </LineChart>
       </ResponsiveContainer>
@@ -273,7 +373,7 @@ const WeatherDetail: React.FC = () => {
                 </Box>
                 <Box sx={{ display: 'flex', gap: 3, mb: 3 }}>
                   <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    Precipitation: {currentWeather.current.precip_mm}%
+                    Precipitation: {currentWeather.current.precip_mm}mm
                   </Typography>
                   <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     Humidity: {currentWeather.current.humidity}%
@@ -322,25 +422,30 @@ const WeatherDetail: React.FC = () => {
                     Wind
                   </Button>
                 </Box>
-                <Box sx={{ height: 200, position: 'relative' }}>
+                <Box sx={{ height: 300, mb: 3, border: '1px solid rgba(255,255,255,0.1)' }}>
                   {renderChart()}
                 </Box>
               </Grid>
               <Grid item xs={12}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-                  {forecast.forecast.forecastday.slice(0, 8).map((day, index) => (
+                  {forecast.forecast.forecastday.map((day, index) => (
                     <Box key={index} sx={{ textAlign: 'center' }}>
                       <Typography variant="body2" sx={{ color: 'white' }}>
-                        {index === 0 ? 'Sun' : new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
+                        {index === 0 ? 'Today' : new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
                       </Typography>
                       <Box sx={{ my: 1 }}>
-                        <WbSunny sx={{ color: '#FFD700', fontSize: 24 }} />
+                        <img 
+                          src={day.day.condition.icon} 
+                          alt={day.day.condition.text}
+                          width={40}
+                          height={40}
+                        />
                       </Box>
                       <Typography variant="body2" sx={{ color: '#FFD700' }}>
-                        {day.day.maxtemp_c}°
+                        {Math.round(day.day.maxtemp_c)}°
                       </Typography>
                       <Typography variant="body2" sx={{ color: 'grey' }}>
-                        {day.day.mintemp_c}°
+                        {Math.round(day.day.mintemp_c)}°
                       </Typography>
                     </Box>
                   ))}
@@ -362,10 +467,33 @@ const WeatherDetail: React.FC = () => {
         <Box sx={{ width: '100%' }}>
           <Box sx={{ mb: 3, p: 2, bgcolor: 'rgba(0, 0, 0, 0.03)', borderRadius: 1 }}>
             <Grid container spacing={2} alignItems="center">
-              <Grid item xs={12} md={6}>
-                <Typography variant="body2" color="text.secondary">
-                  🌡️ High/Low Temperature • ☀️ Weather Condition • 💧 Precipitation • 💨 Wind Speed
-                </Typography>
+              <Grid item xs={12}>
+                <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between', px: 2 }}>
+                  <Box sx={{ width: '180px' }}>
+                    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>Date</Typography>
+                  </Box>
+                  <Box sx={{ width: '100px', textAlign: 'center' }}>
+                    <Typography variant="body2" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+                      <span role="img" aria-label="temperature">🌡️</span> High/Low
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: '200px', textAlign: 'center' }}>
+                    <Typography variant="body2" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+                      <span role="img" aria-label="weather condition">☀️</span> Condition
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: '100px', textAlign: 'center' }}>
+                    <Typography variant="body2" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+                      <span role="img" aria-label="precipitation">💧</span> Precip.
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: '120px', textAlign: 'center' }}>
+                    <Typography variant="body2" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+                      <span role="img" aria-label="wind">💨</span> Wind
+                    </Typography>
+                  </Box>
+                  <Box sx={{ width: 40 }}></Box>
+                </Box>
               </Grid>
             </Grid>
           </Box>
@@ -429,7 +557,7 @@ const WeatherDetail: React.FC = () => {
                 <Box sx={{ width: '100px', display: 'flex', alignItems: 'center', gap: 1 }}>
                   <WaterDrop sx={{ fontSize: 16, color: '#4169E1' }} />
                   <Typography variant="body2">
-                    {Math.round(day.day.totalprecip_mm)}%
+                    {Math.round(day.day.totalprecip_mm)}mm
                   </Typography>
                 </Box>
 
@@ -537,26 +665,31 @@ const WeatherDetail: React.FC = () => {
                             Wind
                           </Button>
                         </Box>
-                        <Box sx={{ height: 200, position: 'relative' }}>
+                        <Box sx={{ height: 300, mb: 3, border: '1px solid rgba(255,255,255,0.1)' }}>
                           {renderChart()}
                         </Box>
                       </Grid>
 
                       <Grid item xs={12}>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-                          {forecast.forecast.forecastday.slice(0, 8).map((forecastDay, idx) => (
+                          {forecast.forecast.forecastday.map((forecastDay, idx) => (
                             <Box key={idx} sx={{ textAlign: 'center' }}>
                               <Typography variant="body2" sx={{ color: 'white' }}>
-                                {idx === 0 ? 'Sun' : new Date(forecastDay.date).toLocaleDateString('en-US', { weekday: 'short' })}
+                                {idx === 0 ? 'Today' : new Date(forecastDay.date).toLocaleDateString('en-US', { weekday: 'short' })}
                               </Typography>
                               <Box sx={{ my: 1 }}>
-                                <WbSunny sx={{ color: '#FFD700', fontSize: 24 }} />
+                                <img 
+                                  src={forecastDay.day.condition.icon} 
+                                  alt={forecastDay.day.condition.text}
+                                  width={40}
+                                  height={40}
+                                />
                               </Box>
                               <Typography variant="body2" sx={{ color: '#FFD700' }}>
-                                {forecastDay.day.maxtemp_c}°
+                                {Math.round(forecastDay.day.maxtemp_c)}°
                               </Typography>
                               <Typography variant="body2" sx={{ color: 'grey' }}>
-                                {forecastDay.day.mintemp_c}°
+                                {Math.round(forecastDay.day.mintemp_c)}°
                               </Typography>
                             </Box>
                           ))}

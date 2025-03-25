@@ -28,7 +28,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ weather, onClick, showDetails
     if (onClick) {
       onClick();
     } else {
-      navigate(`/weather/${weather.location.name}`);
+      navigate(`/weather/${encodeURIComponent(weather.location.name)}`);
     }
   };
 

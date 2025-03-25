@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import {
   Container,
   TextField,
@@ -14,25 +14,39 @@ import {
   CircularProgress,
   Card,
   CardContent,
-  Fade,
   Popper,
-} from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { LocationOn, Delete, WaterDrop, Air, Thermostat } from '@mui/icons-material';
-import { RootState } from '../store/store';
-import { addRecentSearch, removeRecentSearch, setSearchResults } from '../store/weatherSlice';
-import { useWeather } from '../hooks/useWeather';
-import { useNavigate } from 'react-router-dom';
-import { useTheme } from '../context/ThemeContext';
-const popularCities = ['London', 'New York', 'Tokyo', 'Paris', 'Sydney'];
+} from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  LocationOn,
+  Delete,
+  WaterDrop,
+  Air,
+  Thermostat,
+} from "@mui/icons-material";
+import { RootState } from "../store/store";
+import {
+  addRecentSearch,
+  removeRecentSearch,
+  setSearchResults,
+} from "../store/weatherSlice";
+import { useWeather } from "../hooks/useWeather";
+import { useNavigate } from "react-router-dom";
+import { useTheme } from "../context/ThemeContext";
+const popularCities = ["London", "New York", "Tokyo", "Paris", "Sydney"];
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { recentSearches, searchResults } = useSelector((state: RootState) => state.weather);
-  const { currentWeather, loading, error, fetchWeatherData, searchLocations } = useWeather();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
+  const { recentSearches, searchResults } = useSelector(
+    (state: RootState) => state.weather
+  );
+  const { /* currentWeather, */ loading, error, fetchWeatherData, searchLocations } =
+    useWeather();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(
+    null
+  );
   const [weatherData, setWeatherData] = useState<{ [key: string]: any }>({});
   const [hoveredLocation, setHoveredLocation] = useState<string | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -81,16 +95,19 @@ const Home: React.FC = () => {
     }
   };
 
-  const handleLocationClick = (location: string, isFromSearch: boolean = false) => {
+  const handleLocationClick = (
+    location: string,
+    isFromSearch: boolean = false
+  ) => {
     if (isFromSearch) {
       dispatch(addRecentSearch(location));
     }
-    navigate(`/weather/${location}`);
+    navigate(`/weather/${encodeURIComponent(location)}`);
   };
 
   const handleRemoveRecentSearch = (location: string) => {
     dispatch(removeRecentSearch(location));
-    setWeatherData(prev => {
+    setWeatherData((prev) => {
       const newData = { ...prev };
       delete newData[location];
       return newData;
@@ -103,36 +120,38 @@ const Home: React.FC = () => {
     return (
       <Card
         sx={{
-          height: '100%',
-          transition: 'all 0.2s ease-in-out',
-          transform: hoveredLocation === location ? 'scale(1.02)' : 'scale(1)',
-          '&:hover': {
+          height: "100%",
+          transition: "all 0.2s ease-in-out",
+          transform: hoveredLocation === location ? "scale(1.02)" : "scale(1)",
+          "&:hover": {
             boxShadow: 6,
           },
-          position: 'relative',
-          overflow: 'visible',
+          position: "relative",
+          overflow: "visible",
         }}
       >
         <CardContent sx={{ p: 2 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Box sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-                mb: 1,
-                '& .MuiSvgIcon-root': {
-                  color: 'primary.main',
-                }
-              }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  mb: 1,
+                  "& .MuiSvgIcon-root": {
+                    color: "primary.main",
+                  },
+                }}
+              >
                 <LocationOn />
                 <Typography
                   variant="h6"
                   sx={{
                     fontWeight: 600,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap'
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {data.location.name}, {data.location.country}
@@ -140,25 +159,29 @@ const Home: React.FC = () => {
               </Box>
             </Grid>
             <Grid item xs={12}>
-              <Box sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 2,
-                mb: 2
-              }}>
-                <Box sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1,
-                  bgcolor: 'primary.light',
-                  p: 1,
-                  borderRadius: 1,
-                  '& img': {
-                    width: 48,
-                    height: 48,
-                    objectFit: 'contain'
-                  }
-                }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 2,
+                  mb: 2,
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                    bgcolor: "primary.light",
+                    p: 1,
+                    borderRadius: 1,
+                    "& img": {
+                      width: 48,
+                      height: 48,
+                      objectFit: "contain",
+                    },
+                  }}
+                >
                   <img
                     src={data.current.condition.icon}
                     alt={data.current.condition.text}
@@ -170,7 +193,7 @@ const Home: React.FC = () => {
                     component="div"
                     sx={{
                       fontWeight: 700,
-                      lineHeight: 1.2
+                      lineHeight: 1.2,
                     }}
                   >
                     {data.current.temp_c}°C
@@ -180,7 +203,7 @@ const Home: React.FC = () => {
                     color="text.secondary"
                     sx={{
                       fontWeight: 500,
-                      textTransform: 'capitalize'
+                      textTransform: "capitalize",
                     }}
                   >
                     {data.current.condition.text}
@@ -191,18 +214,22 @@ const Home: React.FC = () => {
             <Grid item xs={12}>
               <Grid container spacing={2}>
                 <Grid item xs={4}>
-                  <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: 0.5,
-                    p: 1,
-                    borderRadius: 1,
-                    bgcolor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'grey.50',
-                    '& .MuiSvgIcon-root': {
-                      color: 'primary.main',
-                    }
-                  }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: 0.5,
+                      p: 1,
+                      borderRadius: 1,
+                      bgcolor: isDarkMode
+                        ? "rgba(255, 255, 255, 0.05)"
+                        : "grey.50",
+                      "& .MuiSvgIcon-root": {
+                        color: "primary.main",
+                      },
+                    }}
+                  >
                     <WaterDrop />
                     <Typography
                       variant="body2"
@@ -211,27 +238,28 @@ const Home: React.FC = () => {
                     >
                       Humidity
                     </Typography>
-                    <Typography
-                      variant="body1"
-                      sx={{ fontWeight: 600 }}
-                    >
+                    <Typography variant="body1" sx={{ fontWeight: 600 }}>
                       {data.current.humidity}%
                     </Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={4}>
-                  <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: 0.5,
-                    p: 1,
-                    borderRadius: 1,
-                    bgcolor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'grey.50',
-                    '& .MuiSvgIcon-root': {
-                      color: 'primary.main',
-                    }
-                  }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: 0.5,
+                      p: 1,
+                      borderRadius: 1,
+                      bgcolor: isDarkMode
+                        ? "rgba(255, 255, 255, 0.05)"
+                        : "grey.50",
+                      "& .MuiSvgIcon-root": {
+                        color: "primary.main",
+                      },
+                    }}
+                  >
                     <Air />
                     <Typography
                       variant="body2"
@@ -240,27 +268,28 @@ const Home: React.FC = () => {
                     >
                       Wind
                     </Typography>
-                    <Typography
-                      variant="body1"
-                      sx={{ fontWeight: 600 }}
-                    >
+                    <Typography variant="body1" sx={{ fontWeight: 600 }}>
                       {data.current.wind_kph} km/h
                     </Typography>
                   </Box>
                 </Grid>
                 <Grid item xs={4}>
-                  <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: 0.5,
-                    p: 1,
-                    borderRadius: 1,
-                    bgcolor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'grey.50',
-                    '& .MuiSvgIcon-root': {
-                      color: 'primary.main',
-                    }
-                  }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: 0.5,
+                      p: 1,
+                      borderRadius: 1,
+                      bgcolor: isDarkMode
+                        ? "rgba(255, 255, 255, 0.05)"
+                        : "grey.50",
+                      "& .MuiSvgIcon-root": {
+                        color: "primary.main",
+                      },
+                    }}
+                  >
                     <Thermostat />
                     <Typography
                       variant="body2"
@@ -269,10 +298,7 @@ const Home: React.FC = () => {
                     >
                       Feels
                     </Typography>
-                    <Typography
-                      variant="body1"
-                      sx={{ fontWeight: 600 }}
-                    >
+                    <Typography variant="body1" sx={{ fontWeight: 600 }}>
                       {data.current.feelslike_c}°C
                     </Typography>
                   </Box>
@@ -287,20 +313,21 @@ const Home: React.FC = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <Box sx={{ mb: 4, textAlign: 'center' }}>
+      <Box sx={{ mb: 4, textAlign: "center" }}>
         <Typography variant="h4" gutterBottom>
           Weather App
         </Typography>
-        <Typography 
-          variant="subtitle1" 
-          sx={{ 
+        <Typography
+          variant="subtitle1"
+          sx={{
             mb: 4,
-            color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'text.secondary',
-            maxWidth: '600px',
-            mx: 'auto'
+            color: isDarkMode ? "rgba(255, 255, 255, 0.7)" : "text.secondary",
+            maxWidth: "600px",
+            mx: "auto",
           }}
         >
-          Stay informed with real-time weather updates from around the world. Search for any location to get detailed weather information.
+          Stay informed with real-time weather updates from around the world.
+          Search for any location to get detailed weather information.
         </Typography>
         <TextField
           fullWidth
@@ -313,7 +340,7 @@ const Home: React.FC = () => {
         />
 
         {loading && (
-          <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
+          <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
             <CircularProgress />
           </Box>
         )}
@@ -332,9 +359,9 @@ const Home: React.FC = () => {
         >
           <Paper
             sx={{
-              width: '100%',
+              width: "100%",
               maxHeight: 300,
-              overflow: 'auto',
+              overflow: "auto",
               boxShadow: 3,
               zIndex: 1300,
             }}
@@ -372,26 +399,26 @@ const Home: React.FC = () => {
                 <Grid item xs={12} sm={6} md={4} key={location}>
                   <Box
                     sx={{
-                      position: 'relative',
-                      height: '100%',
-                      transition: 'transform 0.2s ease-in-out',
-                      '&:hover': {
-                        transform: 'translateY(-4px)',
-                      }
+                      position: "relative",
+                      height: "100%",
+                      transition: "transform 0.2s ease-in-out",
+                      "&:hover": {
+                        transform: "translateY(-4px)",
+                      },
                     }}
                     onMouseEnter={() => setHoveredLocation(location)}
                     onMouseLeave={() => setHoveredLocation(null)}
                   >
                     <IconButton
                       sx={{
-                        position: 'absolute',
+                        position: "absolute",
                         right: 8,
                         top: 8,
                         zIndex: 1,
-                        bgcolor: 'background.paper',
-                        '&:hover': {
-                          bgcolor: 'background.paper',
-                        }
+                        bgcolor: "background.paper",
+                        "&:hover": {
+                          bgcolor: "background.paper",
+                        },
                       }}
                       size="small"
                       onClick={() => handleRemoveRecentSearch(location)}
@@ -401,11 +428,14 @@ const Home: React.FC = () => {
                     <Box
                       onClick={() => handleLocationClick(location)}
                       sx={{
-                        cursor: 'pointer',
-                        height: '100%',
+                        cursor: "pointer",
+                        height: "100%",
                       }}
                     >
-                      <WeatherCard location={location} data={weatherData[location]} />
+                      <WeatherCard
+                        location={location}
+                        data={weatherData[location]}
+                      />
                     </Box>
                   </Box>
                 </Grid>
@@ -420,7 +450,7 @@ const Home: React.FC = () => {
             gutterBottom
             sx={{
               mt: recentSearches.length > 0 ? 6 : 0,
-              mb: 3
+              mb: 3,
             }}
           >
             Popular Cities
@@ -433,12 +463,12 @@ const Home: React.FC = () => {
                   onMouseEnter={() => setHoveredLocation(city)}
                   onMouseLeave={() => setHoveredLocation(null)}
                   sx={{
-                    cursor: 'pointer',
-                    height: '100%',
-                    transition: 'transform 0.2s ease-in-out',
-                    '&:hover': {
-                      transform: 'translateY(-4px)',
-                    }
+                    cursor: "pointer",
+                    height: "100%",
+                    transition: "transform 0.2s ease-in-out",
+                    "&:hover": {
+                      transform: "translateY(-4px)",
+                    },
                   }}
                 >
                   <WeatherCard location={city} data={weatherData[city]} />
@@ -452,4 +482,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home; 
+export default Home;
