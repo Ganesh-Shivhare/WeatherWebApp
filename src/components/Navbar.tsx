@@ -39,7 +39,7 @@ const Navbar: React.FC = () => {
   const translate = t as (key: string) => string;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const { isDarkMode, toggleTheme, setTheme, currentTheme } = useCustomTheme();
+  const { isDarkMode, toggleTheme, setTheme, currentTheme, setCustomThemeColor } = useCustomTheme();
   const navigate = useNavigate();
   const location = useLocation();
   
@@ -50,10 +50,10 @@ const Navbar: React.FC = () => {
 
   // Theme options
   const themes = [
-    { name: 'blue' as ThemeName, label: 'Blue' },
-    { name: 'green' as ThemeName, label: 'Green' },
-    { name: 'purple' as ThemeName, label: 'Purple' },
-    { name: 'orange' as ThemeName, label: 'Orange' },
+    { name: 'default' as ThemeName, label: 'Blue', id: 'blue-theme' },
+    { name: 'forest' as ThemeName, label: 'Green', id: 'green-theme' },
+    { name: 'default' as ThemeName, label: 'Purple', customColor: 'purple', id: 'purple-theme' },
+    { name: 'sunset' as ThemeName, label: 'Orange', id: 'orange-theme' },
   ];
 
   // Language options
@@ -77,8 +77,29 @@ const Navbar: React.FC = () => {
     setLanguageMenuAnchor(null);
   };
 
-  const handleThemeChange = (themeName: ThemeName) => {
+  const handleThemeChange = (themeName: ThemeName, customColor?: string, id?: string) => {
+    console.log('Theme change:', themeName, customColor, id);
+    
+    // First, set the base theme
     setTheme(themeName);
+    
+    // Then handle custom color
+    if (customColor === 'purple') {
+      console.log('Setting custom theme color to purple');
+      // We need to set the customThemeColor after setting the theme
+      setTimeout(() => {
+        setCustomThemeColor('purple');
+      }, 0);
+    } else if (id === 'blue-theme') {
+      console.log('Blue theme selected, explicitly clearing custom color');
+      // For blue theme, we need to explicitly clear any custom theme
+      setCustomThemeColor(null);
+    } else {
+      console.log('Clearing custom theme color');
+      // Make sure we explicitly clear the custom theme color for other themes
+      setCustomThemeColor(null);
+    }
+    
     handleMenuClose();
   };
 
@@ -361,15 +382,22 @@ const Navbar: React.FC = () => {
         open={Boolean(themeMenuAnchor)}
         onClose={handleMenuClose}
       >
-        {themes.map((theme) => (
-          <MenuItem
-            key={theme.name}
-            onClick={() => handleThemeChange(theme.name)}
-            selected={currentTheme === theme.name}
-          >
-            {theme.label}
-          </MenuItem>
-        ))}
+        {themes.map((theme) => {
+          // Determine if this theme is selected
+          const isSelected = theme.customColor === 'purple' 
+            ? localStorage.getItem('customThemeColor') === 'purple'
+            : currentTheme === theme.name && localStorage.getItem('customThemeColor') === null;
+          
+          return (
+            <MenuItem
+              key={theme.id}
+              onClick={() => handleThemeChange(theme.name, theme.customColor, theme.id)}
+              selected={isSelected}
+            >
+              {theme.label}
+            </MenuItem>
+          );
+        })}
       </Menu>
 
       {/* Language Menu */}

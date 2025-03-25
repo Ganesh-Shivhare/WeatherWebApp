@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
-const BASE_URL = 'http://api.weatherapi.com/v1';
+const BASE_URL = 'https://api.weatherapi.com/v1';
 
 export interface WeatherData {
   location: {
@@ -89,49 +89,122 @@ export interface LocationSearchResult {
   url: string;
 }
 
+// Add a connection check utility
+const checkConnection = (): boolean => {
+  return navigator.onLine;
+};
+
 export const weatherService = {
   async getCurrentWeather(location: string): Promise<WeatherData> {
-    const response = await axios.get(`${BASE_URL}/current.json`, {
-      params: {
-        key: API_KEY,
-        q: location,
-        aqi: 'no',
-      },
-    });
-    return response.data;
+    if (!checkConnection()) {
+      throw new Error('No internet connection available');
+    }
+    
+    try {
+      const response = await axios.get(`${BASE_URL}/current.json`, {
+        params: {
+          key: API_KEY,
+          q: location,
+          aqi: 'no',
+        },
+        timeout: 10000, // 10 second timeout
+      });
+      return response.data;
+    } catch (error: any) {
+      console.error('Error fetching current weather:', error);
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        throw new Error(`API Error: ${error.response.status} - ${error.response.data.error?.message || 'Unknown error'}`);
+      } else if (error.request) {
+        // The request was made but no response was received
+        throw new Error('Network error: No response from server');
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        throw new Error(`Request error: ${error.message}`);
+      }
+    }
   },
 
   async getCurrentLocationWeather(lat: number, lon: number): Promise<WeatherData> {
-    const response = await axios.get(`${BASE_URL}/current.json`, {
-      params: {
-        key: API_KEY,
-        q: `${lat},${lon}`,
-        aqi: 'no',
-      },
-    });
-    return response.data;
+    if (!checkConnection()) {
+      throw new Error('No internet connection available');
+    }
+    
+    try {
+      const response = await axios.get(`${BASE_URL}/current.json`, {
+        params: {
+          key: API_KEY,
+          q: `${lat},${lon}`,
+          aqi: 'no',
+        },
+        timeout: 10000, // 10 second timeout
+      });
+      return response.data;
+    } catch (error: any) {
+      console.error('Error fetching location weather:', error);
+      if (error.response) {
+        throw new Error(`API Error: ${error.response.status} - ${error.response.data.error?.message || 'Unknown error'}`);
+      } else if (error.request) {
+        throw new Error('Network error: No response from server');
+      } else {
+        throw new Error(`Request error: ${error.message}`);
+      }
+    }
   },
 
   async getForecast(location: string): Promise<ForecastData> {
-    const response = await axios.get(`${BASE_URL}/forecast.json`, {
-      params: {
-        key: API_KEY,
-        q: location,
-        days: 14,
-        aqi: 'no',
-        alerts: 'no',
-      },
-    });
-    return response.data;
+    if (!checkConnection()) {
+      throw new Error('No internet connection available');
+    }
+    
+    try {
+      const response = await axios.get(`${BASE_URL}/forecast.json`, {
+        params: {
+          key: API_KEY,
+          q: location,
+          days: 14,
+          aqi: 'no',
+          alerts: 'no',
+        },
+        timeout: 10000, // 10 second timeout
+      });
+      return response.data;
+    } catch (error: any) {
+      console.error('Error fetching forecast:', error);
+      if (error.response) {
+        throw new Error(`API Error: ${error.response.status} - ${error.response.data.error?.message || 'Unknown error'}`);
+      } else if (error.request) {
+        throw new Error('Network error: No response from server');
+      } else {
+        throw new Error(`Request error: ${error.message}`);
+      }
+    }
   },
 
   async searchLocation(query: string): Promise<LocationSearchResult[]> {
-    const response = await axios.get(`${BASE_URL}/search.json`, {
-      params: {
-        key: API_KEY,
-        q: query,
-      },
-    });
-    return response.data;
+    if (!checkConnection()) {
+      throw new Error('No internet connection available');
+    }
+    
+    try {
+      const response = await axios.get(`${BASE_URL}/search.json`, {
+        params: {
+          key: API_KEY,
+          q: query,
+        },
+        timeout: 10000, // 10 second timeout
+      });
+      return response.data;
+    } catch (error: any) {
+      console.error('Error searching locations:', error);
+      if (error.response) {
+        throw new Error(`API Error: ${error.response.status} - ${error.response.data.error?.message || 'Unknown error'}`);
+      } else if (error.request) {
+        throw new Error('Network error: No response from server');
+      } else {
+        throw new Error(`Request error: ${error.message}`);
+      }
+    }
   },
 }; 
