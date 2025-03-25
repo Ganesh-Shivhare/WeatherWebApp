@@ -47,6 +47,7 @@ import {
   Area,
   // CartesianGrid,
 } from 'recharts';
+import { useTheme } from '../context/ThemeContext';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -90,6 +91,37 @@ const WeatherDetail: React.FC = () => {
   const [chartData, setChartData] = useState<any[]>([]);
   const [selectedChart, setSelectedChart] = useState<string>('temperature');
   const [expandedDay, setExpandedDay] = useState<number | null>(null);
+  const { themeColor } = useTheme();
+
+  // Helper function to get color based on theme
+  const getThemeColor = (type: 'temperature' | 'precipitation' | 'wind') => {
+    console.log('Getting theme color for:', type, 'current themeColor:', themeColor);
+    const themeColors = {
+      blue: {
+        temperature: '#1976d2',
+        precipitation: '#64b5f6',
+        wind: '#0d47a1'
+      },
+      green: {
+        temperature: '#2e7d32',
+        precipitation: '#81c784',
+        wind: '#1b5e20'
+      },
+      purple: {
+        temperature: '#7b1fa2',
+        precipitation: '#ba68c8',
+        wind: '#4a148c'
+      },
+      orange: {
+        temperature: '#f57c00',
+        precipitation: '#ffb74d',
+        wind: '#e65100'
+      }
+    };
+    const colorSet = themeColors[themeColor as keyof typeof themeColors] || themeColors.blue;
+    console.log('Using color set:', themeColor, 'returning color:', colorSet[type]);
+    return colorSet[type];
+  };
 
   // Function to prepare chart data from hourly forecast
   const prepareChartData = (hourData: any[]) => {
@@ -219,19 +251,19 @@ const WeatherDetail: React.FC = () => {
     const chartConfigs: Record<string, ChartConfig> = {
       temperature: {
         dataKey: 'temp',
-        color: '#FFD700',
+        color: getThemeColor('temperature'),
         unit: '°C',
         label: 'Temperature'
       },
       precipitation: {
         dataKey: 'precip',
-        color: '#4169E1',
+        color: getThemeColor('precipitation'),
         unit: 'mm',
         label: 'Precipitation'
       },
       wind: {
         dataKey: 'wind',
-        color: '#32CD32',
+        color: getThemeColor('wind'),
         unit: 'km/h',
         label: 'Wind Speed'
       }
@@ -389,10 +421,10 @@ const WeatherDetail: React.FC = () => {
                     variant="text"
                     onClick={() => setSelectedChart('temperature')}
                     sx={{
-                      color: selectedChart === 'temperature' ? '#FFD700' : 'white',
-                      borderBottom: selectedChart === 'temperature' ? '2px solid #FFD700' : 'none',
+                      color: selectedChart === 'temperature' ? getThemeColor('temperature') : 'white',
+                      borderBottom: selectedChart === 'temperature' ? `2px solid ${getThemeColor('temperature')}` : 'none',
                       borderRadius: 0,
-                      '&:hover': { borderBottom: '2px solid #FFD700' }
+                      '&:hover': { borderBottom: `2px solid ${getThemeColor('temperature')}` }
                     }}
                   >
                     Temperature
@@ -401,10 +433,10 @@ const WeatherDetail: React.FC = () => {
                     variant="text"
                     onClick={() => setSelectedChart('precipitation')}
                     sx={{
-                      color: selectedChart === 'precipitation' ? '#4169E1' : 'white',
-                      borderBottom: selectedChart === 'precipitation' ? '2px solid #4169E1' : 'none',
+                      color: selectedChart === 'precipitation' ? getThemeColor('precipitation') : 'white',
+                      borderBottom: selectedChart === 'precipitation' ? `2px solid ${getThemeColor('precipitation')}` : 'none',
                       borderRadius: 0,
-                      '&:hover': { borderBottom: '2px solid #4169E1' }
+                      '&:hover': { borderBottom: `2px solid ${getThemeColor('precipitation')}` }
                     }}
                   >
                     Precipitation
@@ -413,10 +445,10 @@ const WeatherDetail: React.FC = () => {
                     variant="text"
                     onClick={() => setSelectedChart('wind')}
                     sx={{
-                      color: selectedChart === 'wind' ? '#32CD32' : 'white',
-                      borderBottom: selectedChart === 'wind' ? '2px solid #32CD32' : 'none',
+                      color: selectedChart === 'wind' ? getThemeColor('wind') : 'white',
+                      borderBottom: selectedChart === 'wind' ? `2px solid ${getThemeColor('wind')}` : 'none',
                       borderRadius: 0,
-                      '&:hover': { borderBottom: '2px solid #32CD32' }
+                      '&:hover': { borderBottom: `2px solid ${getThemeColor('wind')}` }
                     }}
                   >
                     Wind
@@ -632,10 +664,10 @@ const WeatherDetail: React.FC = () => {
                             variant="text"
                             onClick={() => setSelectedChart('temperature')}
                             sx={{
-                              color: selectedChart === 'temperature' ? '#FFD700' : 'white',
-                              borderBottom: selectedChart === 'temperature' ? '2px solid #FFD700' : 'none',
+                              color: selectedChart === 'temperature' ? getThemeColor('temperature') : 'white',
+                              borderBottom: selectedChart === 'temperature' ? `2px solid ${getThemeColor('temperature')}` : 'none',
                               borderRadius: 0,
-                              '&:hover': { borderBottom: '2px solid #FFD700' }
+                              '&:hover': { borderBottom: `2px solid ${getThemeColor('temperature')}` }
                             }}
                           >
                             Temperature
@@ -644,10 +676,10 @@ const WeatherDetail: React.FC = () => {
                             variant="text"
                             onClick={() => setSelectedChart('precipitation')}
                             sx={{
-                              color: selectedChart === 'precipitation' ? '#4169E1' : 'white',
-                              borderBottom: selectedChart === 'precipitation' ? '2px solid #4169E1' : 'none',
+                              color: selectedChart === 'precipitation' ? getThemeColor('precipitation') : 'white',
+                              borderBottom: selectedChart === 'precipitation' ? `2px solid ${getThemeColor('precipitation')}` : 'none',
                               borderRadius: 0,
-                              '&:hover': { borderBottom: '2px solid #4169E1' }
+                              '&:hover': { borderBottom: `2px solid ${getThemeColor('precipitation')}` }
                             }}
                           >
                             Precipitation
@@ -656,10 +688,10 @@ const WeatherDetail: React.FC = () => {
                             variant="text"
                             onClick={() => setSelectedChart('wind')}
                             sx={{
-                              color: selectedChart === 'wind' ? '#32CD32' : 'white',
-                              borderBottom: selectedChart === 'wind' ? '2px solid #32CD32' : 'none',
+                              color: selectedChart === 'wind' ? getThemeColor('wind') : 'white',
+                              borderBottom: selectedChart === 'wind' ? `2px solid ${getThemeColor('wind')}` : 'none',
                               borderRadius: 0,
-                              '&:hover': { borderBottom: '2px solid #32CD32' }
+                              '&:hover': { borderBottom: `2px solid ${getThemeColor('wind')}` }
                             }}
                           >
                             Wind
