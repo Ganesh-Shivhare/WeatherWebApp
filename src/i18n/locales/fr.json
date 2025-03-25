@@ -1,0 +1,121 @@
+{
+  "appName": "Application Météo",
+  "subtitle": "Votre compagnon météo personnel",
+  "home": "Accueil",
+  "about": "À propos",
+  "themeColor": "Couleur du Thème",
+  "lightMode": "Mode Clair",
+  "darkMode": "Mode Sombre",
+  "changeLanguage": "Changer de Langue",
+  "footer": {
+    "rights": "© 2024 Application Météo. Tous droits réservés."
+  },
+  "searchPlaceholder": "Rechercher une ville...",
+  "searchButton": "Rechercher",
+  "recentSearches": "Recherches Récentes",
+  "popularCities": "Villes Populaires",
+  "noRecentSearches": "Aucune recherche récente",
+  "noResults": "Aucun résultat trouvé",
+  "error": "Erreur",
+  "tryAgain": "Réessayer",
+  "loading": "Chargement...",
+  "weatherDetails": "Détails Météo",
+  "feelsLike": "Ressenti",
+  "humidity": "Humidité",
+  "windSpeed": "Vitesse du Vent",
+  "pressure": "Pression",
+  "visibility": "Visibilité",
+  "sunrise": "Lever du Soleil",
+  "sunset": "Coucher du Soleil",
+  "uvIndex": "Indice UV",
+  "dewPoint": "Point de Rosée",
+  "aboutTitle": "À propos de l'Application Météo",
+  "aboutDescription": "Application Météo est une Application Web Progressive qui fournit des informations météorologiques précises pour n'importe quel endroit dans le monde. Construite avec React et Material-UI, elle offre une expérience fluide sur tous les appareils.",
+  "features": {
+    "title": "Fonctionnalités",
+    "accurate": "Données météo précises",
+    "realtime": "Mises à jour en temps réel",
+    "offline": "Fonctionne hors ligne",
+    "responsive": "Design responsive",
+    "multilingual": "Plusieurs langues"
+  },
+  "pwa": {
+    "install": {
+      "title": "Installer l'Application Météo",
+      "subtitle": "Installez notre application pour une meilleure expérience",
+      "description": "Installez l'Application Météo pour un accès rapide et profitez des fonctionnalités hors ligne.",
+      "howToInstall": "Comment Installer",
+      "step1": "Appuyez sur le bouton menu (⋮) dans votre navigateur",
+      "step2": "Sélectionnez 'Ajouter à l'écran d'accueil' dans le menu",
+      "step3": "Appuyez sur 'Installer' pour terminer l'installation",
+      "install": "Installer",
+      "notNow": "Plus Tard"
+    },
+    "features": {
+      "offline": "Fonctionne sans connexion internet",
+      "fast": "Performance rapide et réactive",
+      "notifications": "Recevez des alertes et mises à jour météo",
+      "secure": "Navigation sécurisée et privée"
+    }
+  },
+  "privacy": {
+    "title": "Politique de Confidentialité",
+    "lastUpdated": "Dernière Mise à Jour : 20 Mars 2024",
+    "introduction": {
+      "title": "Introduction",
+      "content": "Chez Application Météo, nous prenons votre confidentialité au sérieux. Cette Politique de Confidentialité explique comment nous collectons, utilisons et protégeons vos informations personnelles lorsque vous utilisez notre application météo."
+    },
+    "dataCollection": {
+      "title": "Collecte de Données",
+      "content": "Nous collectons des données personnelles minimales nécessaires pour fournir des informations météo. Cela inclut vos données de localisation (avec votre permission) et des informations de base sur l'appareil. Nous ne collectons ni ne stockons d'informations d'identification personnelle."
+    },
+    "dataUsage": {
+      "title": "Utilisation des Données",
+      "content": "Vos données sont utilisées uniquement pour fournir des informations météo précises et améliorer notre service. Nous ne vendons ni ne partageons vos informations personnelles avec des tiers."
+    },
+    "cookies": {
+      "title": "Cookies",
+      "content": "Nous utilisons des cookies essentiels pour maintenir vos préférences et améliorer votre expérience. Ces cookies sont nécessaires au bon fonctionnement de l'application et ne peuvent pas être désactivés."
+    },
+    "thirdParty": {
+      "title": "Services Tiers",
+      "content": "Nous utilisons des données météo de fournisseurs de confiance. Ces services ont leurs propres politiques de confidentialité et pratiques de gestion des données."
+    },
+    "security": {
+      "title": "Sécurité",
+      "content": "Nous mettons en œuvre des mesures de sécurité standard de l'industrie pour protéger vos données. Cependant, aucune méthode de transmission sur Internet n'est 100% sécurisée."
+    },
+    "contact": {
+      "title": "Nous Contacter",
+      "content": "Si vous avez des questions sur notre Politique de Confidentialité, veuillez nous contacter à privacy@weatherapp.com"
+    }
+  },
+  "terms": {
+    "title": "Conditions d'Utilisation",
+    "lastUpdated": "Dernière Mise à Jour : 20 Mars 2024",
+    "introduction": {
+      "title": "Introduction",
+      "content": "Bienvenue sur Application Météo. En utilisant notre application, vous acceptez ces Conditions d'Utilisation. Veuillez les lire attentivement."
+    },
+    "usage": {
+      "title": "Conditions d'Utilisation",
+      "content": "Vous devez avoir au moins 13 ans pour utiliser cette application. Vous acceptez d'utiliser l'application conformément à toutes les lois et réglementations applicables."
+    },
+    "accuracy": {
+      "title": "Précision des Données Météo",
+      "content": "Bien que nous nous efforcions de fournir des informations météo précises, nous ne pouvons pas garantir l'exactitude des prévisions météo. Les conditions météorologiques peuvent changer rapidement."
+    },
+    "liability": {
+      "title": "Limitation de Responsabilité",
+      "content": "Application Météo n'est pas responsable des dommages découlant de l'utilisation ou de l'impossibilité d'utiliser notre service, y compris, mais sans s'y limiter, les décisions liées à la météo."
+    },
+    "modifications": {
+      "title": "Modifications",
+      "content": "Nous nous réservons le droit de modifier ces conditions à tout moment. L'utilisation continue de l'application après les modifications constitue l'acceptation des nouvelles conditions."
+    },
+    "contact": {
+      "title": "Nous Contacter",
+      "content": "Pour des questions sur ces Conditions d'Utilisation, veuillez nous contacter à terms@weatherapp.com"
+    }
+  }
+} 

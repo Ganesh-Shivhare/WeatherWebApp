@@ -1,0 +1,121 @@
+{
+  "appName": "Aplicación del Clima",
+  "subtitle": "Tu compañero personal del clima",
+  "home": "Inicio",
+  "about": "Acerca de",
+  "themeColor": "Color del Tema",
+  "lightMode": "Modo Claro",
+  "darkMode": "Modo Oscuro",
+  "changeLanguage": "Cambiar Idioma",
+  "footer": {
+    "rights": "© 2024 Aplicación del Clima. Todos los derechos reservados."
+  },
+  "searchPlaceholder": "Buscar una ciudad...",
+  "searchButton": "Buscar",
+  "recentSearches": "Búsquedas Recientes",
+  "popularCities": "Ciudades Populares",
+  "noRecentSearches": "Sin búsquedas recientes",
+  "noResults": "No se encontraron resultados",
+  "error": "Error",
+  "tryAgain": "Intentar de Nuevo",
+  "loading": "Cargando...",
+  "weatherDetails": "Detalles del Clima",
+  "feelsLike": "Sensación Térmica",
+  "humidity": "Humedad",
+  "windSpeed": "Velocidad del Viento",
+  "pressure": "Presión",
+  "visibility": "Visibilidad",
+  "sunrise": "Amanecer",
+  "sunset": "Atardecer",
+  "uvIndex": "Índice UV",
+  "dewPoint": "Punto de Rocío",
+  "aboutTitle": "Acerca de Aplicación del Clima",
+  "aboutDescription": "Aplicación del Clima es una Aplicación Web Progresiva que proporciona información precisa del clima para cualquier ubicación en todo el mundo. Construida con React y Material-UI, ofrece una experiencia fluida en todos los dispositivos.",
+  "features": {
+    "title": "Características",
+    "accurate": "Datos climáticos precisos",
+    "realtime": "Actualizaciones en tiempo real",
+    "offline": "Funciona sin conexión",
+    "responsive": "Diseño responsivo",
+    "multilingual": "Múltiples idiomas"
+  },
+  "pwa": {
+    "install": {
+      "title": "Instalar Aplicación del Clima",
+      "subtitle": "Instala nuestra aplicación para una mejor experiencia",
+      "description": "Instala Aplicación del Clima para obtener acceso rápido y disfrutar de funciones sin conexión.",
+      "howToInstall": "Cómo Instalar",
+      "step1": "Toca el botón de menú (⋮) en tu navegador",
+      "step2": "Selecciona 'Añadir a pantalla de inicio' del menú",
+      "step3": "Toca 'Instalar' para completar la instalación",
+      "install": "Instalar",
+      "notNow": "Ahora No"
+    },
+    "features": {
+      "offline": "Funciona sin conexión a internet",
+      "fast": "Rendimiento rápido y responsivo",
+      "notifications": "Recibe alertas y actualizaciones del clima",
+      "secure": "Navegación segura y privada"
+    }
+  },
+  "privacy": {
+    "title": "Política de Privacidad",
+    "lastUpdated": "Última Actualización: 20 de Marzo de 2024",
+    "introduction": {
+      "title": "Introducción",
+      "content": "En Aplicación del Clima, nos tomamos tu privacidad muy en serio. Esta Política de Privacidad explica cómo recopilamos, utilizamos y protegemos tu información personal cuando usas nuestra aplicación del clima."
+    },
+    "dataCollection": {
+      "title": "Recopilación de Datos",
+      "content": "Recopilamos datos personales mínimos necesarios para proporcionar información del clima. Esto incluye datos de tu ubicación (con tu permiso) e información básica del dispositivo. No recopilamos ni almacenamos información de identificación personal."
+    },
+    "dataUsage": {
+      "title": "Uso de Datos",
+      "content": "Tus datos se utilizan únicamente para proporcionar información precisa del clima y mejorar nuestro servicio. No vendemos ni compartimos tu información personal con terceros."
+    },
+    "cookies": {
+      "title": "Cookies",
+      "content": "Utilizamos cookies esenciales para mantener tus preferencias y mejorar tu experiencia. Estas cookies son necesarias para que la aplicación funcione correctamente y no pueden desactivarse."
+    },
+    "thirdParty": {
+      "title": "Servicios de Terceros",
+      "content": "Utilizamos datos del clima de proveedores de confianza. Estos servicios tienen sus propias políticas de privacidad y prácticas de manejo de datos."
+    },
+    "security": {
+      "title": "Seguridad",
+      "content": "Implementamos medidas de seguridad estándar de la industria para proteger tus datos. Sin embargo, ningún método de transmisión por internet es 100% seguro."
+    },
+    "contact": {
+      "title": "Contáctanos",
+      "content": "Si tienes alguna pregunta sobre nuestra Política de Privacidad, por favor contáctanos en privacy@weatherapp.com"
+    }
+  },
+  "terms": {
+    "title": "Términos de Servicio",
+    "lastUpdated": "Última Actualización: 20 de Marzo de 2024",
+    "introduction": {
+      "title": "Introducción",
+      "content": "Bienvenido a Aplicación del Clima. Al usar nuestra aplicación, aceptas estos Términos de Servicio. Por favor, léelos cuidadosamente."
+    },
+    "usage": {
+      "title": "Términos de Uso",
+      "content": "Debes tener al menos 13 años para usar esta aplicación. Aceptas usar la aplicación en cumplimiento con todas las leyes y regulaciones aplicables."
+    },
+    "accuracy": {
+      "title": "Precisión de Datos del Clima",
+      "content": "Si bien nos esforzamos por proporcionar información precisa del clima, no podemos garantizar la precisión de los pronósticos del clima. Las condiciones climáticas pueden cambiar rápidamente."
+    },
+    "liability": {
+      "title": "Limitación de Responsabilidad",
+      "content": "Aplicación del Clima no es responsable por ningún daño que surja del uso o la imposibilidad de usar nuestro servicio, incluyendo pero no limitado a decisiones relacionadas con el clima."
+    },
+    "modifications": {
+      "title": "Modificaciones",
+      "content": "Nos reservamos el derecho de modificar estos términos en cualquier momento. El uso continuo de la aplicación después de los cambios constituye la aceptación de los nuevos términos."
+    },
+    "contact": {
+      "title": "Contáctanos",
+      "content": "Para preguntas sobre estos Términos de Servicio, por favor contáctanos en terms@weatherapp.com"
+    }
+  }
+} 
