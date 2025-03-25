@@ -1,0 +1,121 @@
+{
+  "appName": "Weather App",
+  "subtitle": "Your personal weather companion",
+  "home": "Home",
+  "about": "About",
+  "themeColor": "Theme Color",
+  "lightMode": "Light Mode",
+  "darkMode": "Dark Mode",
+  "changeLanguage": "Change Language",
+  "footer": {
+    "rights": "© 2024 Weather App. All rights reserved."
+  },
+  "searchPlaceholder": "Search for a city...",
+  "searchButton": "Search",
+  "recentSearches": "Recent Searches",
+  "popularCities": "Popular Cities",
+  "noRecentSearches": "No recent searches",
+  "noResults": "No results found",
+  "error": "Error",
+  "tryAgain": "Try Again",
+  "loading": "Loading...",
+  "weatherDetails": "Weather Details",
+  "feelsLike": "Feels Like",
+  "humidity": "Humidity",
+  "windSpeed": "Wind Speed",
+  "pressure": "Pressure",
+  "visibility": "Visibility",
+  "sunrise": "Sunrise",
+  "sunset": "Sunset",
+  "uvIndex": "UV Index",
+  "dewPoint": "Dew Point",
+  "aboutTitle": "About Weather App",
+  "aboutDescription": "Weather App is a Progressive Web Application that provides accurate weather information for any location worldwide. Built with React and Material-UI, it offers a seamless experience across all devices.",
+  "features": {
+    "title": "Features",
+    "accurate": "Accurate weather data",
+    "realtime": "Real-time updates",
+    "offline": "Works offline",
+    "responsive": "Responsive design",
+    "multilingual": "Multiple languages"
+  },
+  "pwa": {
+    "install": {
+      "title": "Install Weather App",
+      "subtitle": "Install our app for a better experience",
+      "description": "Install Weather App to get quick access and enjoy offline features.",
+      "howToInstall": "How to Install",
+      "step1": "Tap the menu button (⋮) in your browser",
+      "step2": "Select 'Add to Home screen' from the menu",
+      "step3": "Tap 'Install' to complete the installation",
+      "install": "Install",
+      "notNow": "Not Now"
+    },
+    "features": {
+      "offline": "Works offline without internet connection",
+      "fast": "Fast and responsive performance",
+      "notifications": "Get weather alerts and updates",
+      "secure": "Secure and private browsing"
+    }
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last Updated: March 20, 2024",
+    "introduction": {
+      "title": "Introduction",
+      "content": "At Weather App, we take your privacy seriously. This Privacy Policy explains how we collect, use, and protect your personal information when you use our weather application."
+    },
+    "dataCollection": {
+      "title": "Data Collection",
+      "content": "We collect minimal personal data necessary for providing weather information. This includes your location data (with your permission) and basic device information. We do not collect or store any personal identifying information."
+    },
+    "dataUsage": {
+      "title": "Data Usage",
+      "content": "Your data is used solely for providing accurate weather information and improving our service. We do not sell or share your personal information with third parties."
+    },
+    "cookies": {
+      "title": "Cookies",
+      "content": "We use essential cookies to maintain your preferences and improve your experience. These cookies are necessary for the app to function properly and cannot be disabled."
+    },
+    "thirdParty": {
+      "title": "Third-Party Services",
+      "content": "We use weather data from trusted third-party providers. These services have their own privacy policies and data handling practices."
+    },
+    "security": {
+      "title": "Security",
+      "content": "We implement industry-standard security measures to protect your data. However, no method of transmission over the internet is 100% secure."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "content": "If you have any questions about our Privacy Policy, please contact us at privacy@weatherapp.com"
+    }
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last Updated: March 20, 2024",
+    "introduction": {
+      "title": "Introduction",
+      "content": "Welcome to Weather App. By using our application, you agree to these Terms of Service. Please read them carefully."
+    },
+    "usage": {
+      "title": "Usage Terms",
+      "content": "You must be at least 13 years old to use this application. You agree to use the app in compliance with all applicable laws and regulations."
+    },
+    "accuracy": {
+      "title": "Weather Data Accuracy",
+      "content": "While we strive to provide accurate weather information, we cannot guarantee the accuracy of weather forecasts. Weather conditions can change rapidly."
+    },
+    "liability": {
+      "title": "Limitation of Liability",
+      "content": "Weather App is not liable for any damages arising from the use or inability to use our service, including but not limited to weather-related decisions."
+    },
+    "modifications": {
+      "title": "Modifications",
+      "content": "We reserve the right to modify these terms at any time. Continued use of the app after changes constitutes acceptance of the new terms."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "content": "For questions about these Terms of Service, please contact us at terms@weatherapp.com"
+    }
+  }
+} 
